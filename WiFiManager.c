@@ -46,8 +46,8 @@ static void dns_task(void *arg)
     }
 
     struct sockaddr_in addr = {
-        .sin_family      = AF_INET,
-        .sin_port        = htons(53),
+        .sin_family = AF_INET,
+        .sin_port = htons(53),
         .sin_addr.s_addr = INADDR_ANY,
     };
     bind(srv->sock, (struct sockaddr *)&addr, sizeof(addr));
@@ -70,7 +70,7 @@ static void dns_task(void *arg)
             continue;
 
         /* Build response in-place: QR=1, AA=1, RCODE=0 */
-        hdr->flags   = htons(0x8400);
+        hdr->flags = htons(0x8400);
         hdr->ancount = htons(1);
 
         /* Append answer record after the question section */
@@ -103,7 +103,7 @@ static dns_server_t *dns_start(esp_ip4_addr_t ip)
     dns_server_t *srv = calloc(1, sizeof(*srv));
     if (!srv)
         return NULL;
-    srv->ip   = ip;
+    srv->ip = ip;
     srv->sock = -1;
     xTaskCreate(dns_task, "dns_srv", 4096, srv, 5, &srv->task);
     return srv;
@@ -827,7 +827,12 @@ void WiFiManager_StartSTA(WiFiManager_t *wm)
     ESP_ERROR_CHECK(esp_event_handler_instance_register(IP_EVENT, IP_EVENT_STA_GOT_IP, WiFiManager_EventHandler, wm, &wm->event.ip_handle));
 
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
-    ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wm->config));
+    if (strlen((char *)wm->config.sta.ssid) > 0)
+    {
+        ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wm->config));
+    } else{
+        ESP_LOGI(TAG, "[STA] Attempt to load saved credentials.");
+    }
     ESP_ERROR_CHECK(esp_wifi_start());
     vTaskDelay(pdMS_TO_TICKS(100));
 }

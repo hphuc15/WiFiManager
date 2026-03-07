@@ -18,11 +18,6 @@
 #define WM_AP_PSW_DEFAULT "ESP32_Config"
 #define WM_AP_MAX_STA_CONN 1 /**< Max stations allowed to connect to the AP. */
 
-/* Reserved, not currently used. */
-// #define WM_AP_CHANNEL               6    /**< AP Wi-Fi channel. */
-// #define WM_AP_GTK_REKEY_INTERVAL    600  /**< Group key renewal interval (seconds). */
-// #define WM_STA_RETRY_NUM_DEFAULT    3    /**< Default STA reconnect attempt count. */
-
 /** Captive portal page limits. */
 #define WM_MAX_PARAMS 5         /**< Max number of extra input fields on the portal page. */
 #define WM_FIELD_LEN 128        /**< Max length of each field string (id, label, value, ...). */
@@ -184,14 +179,3 @@ const char *WiFiManagerPage_GetParam(const WiFiManagerPage_t *page, const char *
  * @return Heap-allocated HTML string, or NULL on failure. Caller must free().
  */
 char *WiFiManagerPage_Build(const WiFiManagerPage_t *page);
-
-/* [20260203] IDEA */
-/* void WiFiManager_Init_2(WiFiManager_t *wm, WiFiManagerConfig_t *config); */
-/* void WiFiManager_SetRetryNum(WiFiManager_t *wm, uint8_t retry_num){
-    wm->sta_retry_num = retry_num;
-} */
-
-/* [20260204] IDEA */
-/* void WiFiManager_SetAPMaxConnection() */
-/* void WiFiManager_SetAP() */
-/* void WiFiManager_SetAPChannel() */
