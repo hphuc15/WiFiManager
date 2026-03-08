@@ -830,7 +830,9 @@ void WiFiManager_StartSTA(WiFiManager_t *wm)
     if (strlen((char *)wm->config.sta.ssid) > 0)
     {
         ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wm->config));
-    } else{
+    }
+    else
+    {
         ESP_LOGI(TAG, "[STA] Attempt to load saved credentials.");
     }
     ESP_ERROR_CHECK(esp_wifi_start());
@@ -968,8 +970,17 @@ void WiFiManager_ConfigViaAP(WiFiManager_t *wm)
 
     /* Wait to received data */
     wm->portal_waiting_task = xTaskGetCurrentTaskHandle();
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    BaseType_t notified = ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(WM_PORTAL_TIMOUT_MS));
     wm->portal_waiting_task = NULL;
+
+    if (!notified)
+    {
+        ESP_LOGW(TAG, "[ConfigViaAP] Timeout - no credentials received");
+        dns_stop(dns);
+        WiFiManager_StopWebServer(wm);
+        WiFiManager_Stop(wm);
+        return;
+    }
 
     /* Stop server */
     dns_stop(dns);

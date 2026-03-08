@@ -19,9 +19,10 @@
 #define WM_AP_MAX_STA_CONN 1 /**< Max stations allowed to connect to the AP. */
 
 /** Captive portal page limits. */
-#define WM_MAX_PARAMS 5         /**< Max number of extra input fields on the portal page. */
-#define WM_FIELD_LEN 128        /**< Max length of each field string (id, label, value, ...). */
-#define WM_PORTAL_BODY_SIZE 512 /**< Max size of HTTP POST body from the portal form. */
+#define WM_MAX_PARAMS 5                           /**< Max number of extra input fields on the portal page. */
+#define WM_FIELD_LEN 128                          /**< Max length of each field string (id, label, value, ...). */
+#define WM_PORTAL_BODY_SIZE 512                   /**< Max size of HTTP POST body from the portal form. */
+#define WM_PORTAL_TIMOUT_MS (5UL * 60UL * 1000Ul) /**< Max time (ms) waiting for portal form submission. */
 
 /** WiFi event bits used with the event group. */
 #define WM_EVENT_BIT_STASTART BIT0        /**< STA mode started. */
